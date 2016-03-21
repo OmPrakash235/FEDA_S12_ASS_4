@@ -1,0 +1,40 @@
+<!-- Make a Custom Filter for number of duration. -->
+
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<title>AngularJS Filters</title>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+		<script type="text/javascript">
+			var module = angular.module('myApp', []);
+			module.controller('myCtrl', function($scope, $filter){
+				$scope.session = [
+					{sl : 'Session1', name : 'Introduction', duration : '40'},
+					{sl : 'Session2', name : 'HTML Tags', duration : '80'},
+					{sl : 'Session3', name : 'CSS Properties', duration : '70'},
+				];
+			});
+			
+			module.filter('durationFilter', function(){
+				var sessionItems = [];
+				return function(items){
+					for(var i = 0; i<items.length; i++){
+						var d = items[i];
+						if(d.duration >= 50){
+							sessionItems.push(d);
+						}
+					}
+					return sessionItems;
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<div ng-controller="myCtrl">
+			<h3>Showing session having more than 50 sec duration</h3>
+				<div ng-repeat="s in session | durationFilter">
+					<span>{{s.sl}}</span> --- <span>{{s.name}}</span> --- <span>{{s.duration}} sec.</span>
+				</div>
+		</div>
+	</body>
+</html>
